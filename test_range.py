@@ -1,3 +1,7 @@
+# stdlib modules
+import random
+
+# custom modules
 import range_search as rs
 
 def is_bst(node: rs.BST_node, lower=float('-inf'), upper=float('inf')):
@@ -17,8 +21,16 @@ def is_bst(node: rs.BST_node, lower=float('-inf'), upper=float('inf')):
 
     return True
 
-def corrupt_bst(node: rs.BST_node, ratio: float 0.1):
+def corrupt_bst(node: rs.BST_node, ratio: float = 0.5):
     """Function to randomly corrupt a portion of the data in a BST."""
+    if node is not None:
+        change = True if random.random() < ratio else False
+        if change:
+            node.key = random.choice(range(100))
+        # explore left subtree
+        corrupt_bst(node.left, ratio)
+        # explore right subtree
+        corrupt_bst(node.right, ratio) 
  
 bst = rs.BST()
 print(is_bst(bst.root))
@@ -34,4 +46,5 @@ for n in nodes_found:
     print(n)
 
 # corrupt binary search tree
-
+corrupt_bst(bst.root)
+print(is_bst(bst.root))
